@@ -1,0 +1,40 @@
+﻿@model List<Smoothboard.Models.Domain.Order>
+
+@{
+}
+
+<h1>Current Orders</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Drop Off Date</th>
+            <th>Width in cm</th>
+            <th>Length in cm</th>
+            <th>DesignLink</th>
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.Name</td>
+                <td>@order.Email</td>
+                <td>@order.Address</td>
+                <td>@order.Phone</td>
+                <td>@order.DropOffDate.ToString("dd-MM-yyyy")</td>
+                <td>@order.Width</td>
+                <td>@order.Length</td>
+                <td>@order.DesignLink</td>
+                <td><a class="btn btn-success text-light" href="Orders/View/@order.Id">EDIT</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
