@@ -15,8 +15,7 @@ namespace Smoothboard.Controllers
             this.smoothboardDbContext = smoothboardDbContext;
         }
 
-        // showing the list of orders on the main screen
-
+        // GET: Display list of orders on the main screen
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -24,20 +23,20 @@ namespace Smoothboard.Controllers
             return View(orders);
         }
 
-
+        // GET: Display the form to add a new order
         [HttpGet]
         public IActionResult Add()
         {
             return View();
         }
 
-        // When we submit the form we should be able to get the values in a post methode here under
-
+        // POST: Process the form submission to add a new order
         [HttpPost]
         public async Task<IActionResult> Add(AddOrderViewModel addOrderRequest)
         {
             var order = new Order()
             {
+                // Initialize properties using data from the view model
                 Id = Guid.NewGuid(),
                 Name = addOrderRequest.Name,
                 Email = addOrderRequest.Email,
@@ -49,20 +48,23 @@ namespace Smoothboard.Controllers
                 DesignLink = addOrderRequest.DesignLink
             };
 
+            // Add the new order to the database and save changes
             await smoothboardDbContext.Orders.AddAsync(order);
             await smoothboardDbContext.SaveChangesAsync();
+
+            // Redirect to the index view
             return RedirectToAction("Index");
         }
 
-        // Create the Edit function
-
+        // GET: Display the order details for editing
         [HttpGet]
-        public async Task<IActionResult> View(Guid id) 
+        public async Task<IActionResult> View(Guid id)
         {
             var order = await smoothboardDbContext.Orders.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (order != null) 
+            if (order != null)
             {
+                // Create a view model from the order details
                 var viewModel = new UpdateOrderViewModel()
                 {
                     Id = order.Id,
@@ -79,19 +81,19 @@ namespace Smoothboard.Controllers
                 return await Task.Run(() => View("View", viewModel));
             }
 
+            // Redirect to the index view if the order doesn't exist
             return RedirectToAction("Index");
         }
 
-        // Submit the Edited Details function
-
+        // POST: Process the form submission to update order details
         [HttpPost]
-
         public async Task<IActionResult> View(UpdateOrderViewModel model)
         {
             var order = await smoothboardDbContext.Orders.FindAsync(model.Id);
 
-            if (order != null) 
+            if (order != null)
             {
+                // Update order properties using data from the view model
                 order.Name = model.Name;
                 order.Email = model.Email;
                 order.Address = model.Address;
@@ -101,18 +103,18 @@ namespace Smoothboard.Controllers
                 order.Length = model.Length;
                 order.DesignLink = model.DesignLink;
 
+                // Save changes to the database
                 await smoothboardDbContext.SaveChangesAsync();
 
+                // Redirect to the index view
                 return RedirectToAction("Index");
             }
 
+            // Redirect to the index view if the order doesn't exist
             return RedirectToAction("Index");
-
         }
 
-
-        // Delete the selected Order Details function
-
+        // POST: Delete the selected order
         [HttpPost]
         public async Task<IActionResult> Delete(UpdateOrderViewModel model)
         {
@@ -120,15 +122,16 @@ namespace Smoothboard.Controllers
 
             if (order != null)
             {
+                // Remove the order from the database and save changes
                 smoothboardDbContext.Orders.Remove(order);
                 await smoothboardDbContext.SaveChangesAsync();
 
+                // Redirect to the index view
                 return RedirectToAction("Index");
             }
 
+            // Redirect to the index view if the order doesn't exist
             return RedirectToAction("Index");
-
         }
-
     }
 }

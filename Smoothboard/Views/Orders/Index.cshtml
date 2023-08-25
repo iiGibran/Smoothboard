@@ -1,10 +1,12 @@
 ﻿@model List<Smoothboard.Models.Domain.Order>
 
 @{
+    // C# code if needed
 }
 
 <h1>Current Orders</h1>
 
+<!-- Table to display the list of orders -->
 <table class="table">
     <thead>
         <tr>
@@ -21,9 +23,11 @@
         </tr>
     </thead>
     <tbody>
+        <!-- Loop through each order in the Model to populate the table rows -->
         @foreach (var order in Model)
         {
             <tr>
+                <!-- Display order details in each cell -->
                 <td>@order.Id</td>
                 <td>@order.Name</td>
                 <td>@order.Email</td>
