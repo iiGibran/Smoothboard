@@ -30,7 +30,7 @@ namespace Smoothboard.Controllers
             return View();
         }
 
-        // POST: Process the form submission to add a new order
+        // POST: Process the form submission to add a new orderr
         [HttpPost]
         public async Task<IActionResult> Add(AddOrderViewModel addOrderRequest)
         {
